@@ -1,7 +1,4 @@
-"""
-Module: classify_triangle
-This module contains a function to classify triangles based on their side lengths.
-"""
+import math
 
 def classify_triangle(a, b, c):
     """
@@ -16,22 +13,24 @@ def classify_triangle(a, b, c):
     str: Type of triangle (Equilateral, Isosceles, Scalene, Right Triangle, or Not a Triangle)
     """
 
+    # Ensure valid side lengths
+    if a <= 0 or b <= 0 or c <= 0:
+        return "Not a Triangle"
+
+    # Check Triangle Inequality Theorem
     if a + b <= c or a + c <= b or b + c <= a:
         return "Not a Triangle"
 
+    # Identify triangle type
     if a == b == c:
         return "Equilateral"
 
-    if a == b or b == c or a == c:
-        triangle_type = "Isosceles"
-    else:
-        triangle_type = "Scalene"
+    triangle_type = "Isosceles" if (a == b or b == c or a == c) else "Scalene"
 
-    if round(a**2 + b**2, 5) == round(c**2, 5) or \
-       round(a**2 + c**2, 5) == round(b**2, 5) or \
-       round(b**2 + c**2, 5) == round(a**2, 5):
+    # Check for Right Triangle using math.isclose()
+    if math.isclose(a**2 + b**2, c**2, rel_tol=1e-5) or \
+       math.isclose(a**2 + c**2, b**2, rel_tol=1e-5) or \
+       math.isclose(b**2 + c**2, a**2, rel_tol=1e-5):
         return f"{triangle_type} and Right Triangle"
 
     return triangle_type
-
-# Ensure the file ends with a newline (fix for C0304)
